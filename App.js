@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {PermissionsAndroid} from 'react-native';
+import React, { useEffect } from "react";
+import { PermissionsAndroid } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   initialize,
   startDiscoveringPeers,
@@ -23,12 +22,10 @@ import {
   getGroupInfo,
   receiveMessage,
   sendMessage,
-} from 'react-native-wifi-p2p';
-import Home from './src/screens/Home';
-import Send from './src/screens/Send';
-import Receive from './src/screens/Recieve';
+} from "react-native-wifi-p2p";
 
-const Stack = createStackNavigator();
+import lightTheme from "./src/utils/theme";
+import NavigationFlow from "./src/navigation";
 
 const App = () => {
   useEffect(() => {
@@ -37,69 +34,42 @@ const App = () => {
         await initialize();
         // since it's required in Android >= 6.0
         const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
-            title: 'Access to wi-fi P2P mode',
-            message: 'ACCESS_FINE_LOCATION',
+            title: "Access to wi-fi P2P mode",
+            message: "ACCESS_FINE_LOCATION",
           },
         );
 
         console.log(
           granted === PermissionsAndroid.RESULTS.GRANTED
-            ? 'You can use the p2p mode'
-            : 'Permission denied: p2p mode will not work',
+            ? "You can use the p2p mode"
+            : "Permission denied: p2p mode will not work",
         );
 
         subscribeOnPeersUpdates(console.log);
+        console.log("1");
         subscribeOnConnectionInfoUpdates(console.log);
+        console.log("2");
         subscribeOnThisDeviceChanged(console.log);
+        console.log("3");
 
         const status = await startDiscoveringPeers();
-        console.log('startDiscoveringPeers status: ', status);
+        console.log("startDiscoveringPeers status: ", status);
+
+        const chalJa = await getAvailablePeers();
+        console.log(chalJa);
       } catch (e) {
         console.error(e);
       }
     })();
-    // initialize()
-    //   .then(isInitializedSuccessfully =>
-    //     console.log('isInitializedSuccessfully: ', isInitializedSuccessfully),
-    //   )
-    //   .catch(err => console.log('initialization was failed. Err: ', err));
-
-    // PermissionsAndroid.request(
-    //   PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-    //   {
-    //     title: 'Access to wi-fi P2P mode',
-    //     message: 'ACCESS_FINE_LOCATION',
-    //   },
-    // ).then(granted => {
-    //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //     console.log('You can use the p2p mode');
-    //   } else {
-    //     console.log('Permission denied: p2p mode will not work');
-    //   }
-    // });
-
-    // startDiscoveringPeers()
-    //   .then(() => console.log('Starting of discovering was successful'))
-    //   .catch(err =>
-    //     console.error(
-    //       `Something is gone wrong. Maybe your WiFi is disabled? Error details: ${err}`,
-    //     ),
-    //   );
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Send" component={Send} />
-        <Stack.Screen name="Recieve" component={Receive} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider style={{ backgroundColor: lightTheme.colors.background }}>
+      <NavigationFlow />
+    </SafeAreaProvider>
   );
 };
 
 export default App;
-
-// https://github.com/kirillzyusko/react-native-wifi-p2p/issues/44
