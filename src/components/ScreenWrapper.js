@@ -4,9 +4,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const ScreenWrapper = ({ children }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>
-    </SafeAreaView>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <SafeAreaView style={{ flex: 1 }}>{children}</SafeAreaView>
+    </ScrollView>
   );
 };
 

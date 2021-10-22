@@ -8,6 +8,8 @@ const lightTheme = {
     notification: "#efb020",
     textBefore: "#CCD1DB",
     textAfter: "#233249",
+    error: "#CE3A3A",
+    disabled: "#e2e6ed",
   },
   dark: false,
   /** shamelessly copied without attribution
