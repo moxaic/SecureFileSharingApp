@@ -24,8 +24,8 @@ const Home = ({ navigation }) => {
   }, []);
 
   const { colors } = useTheme();
-  const radius = 70;
-  const strokeWidth = 14;
+  const radius = 100;
+  const strokeWidth = 10;
 
   const getStrokeDashOffset = (percentFree) =>
     percentFree === null ? 0 : (percentFree * 2 * Math.PI * radius) / 100;
@@ -33,51 +33,93 @@ const Home = ({ navigation }) => {
   return (
     <>
       <Svg
-        height={radius * 2 + strokeWidth}
-        style={styles.svgBox}
-        width={WINDOW.WIDTH}>
+        {...{
+          height: radius * 2 + strokeWidth,
+          style: styles.svgBox,
+          width: WINDOW.WIDTH,
+        }}>
         <Circle
-          cx={WINDOW.WIDTH / 2}
-          cy={radius + strokeWidth / 2}
-          r={radius}
-          fill="none"
-          stroke={colors.textBefore}
-          {...{ strokeWidth }}
+          {...{
+            cx: WINDOW.WIDTH / 2,
+            cy: radius + strokeWidth / 2,
+            r: radius,
+            fill: "none",
+            stroke: colors.textBefore,
+            strokeWidth,
+          }}
         />
         <Circle
-          cx={WINDOW.WIDTH / 2}
-          cy={radius + strokeWidth / 2}
-          r={radius}
-          fill="none"
-          stroke={colors.primary}
-          strokeDasharray={2 * Math.PI * radius}
-          strokeDashoffset={getStrokeDashOffset(freeSpacePercent)}
-          {...{ strokeWidth }}
+          {...{
+            cx: WINDOW.WIDTH / 2,
+            cy: radius + strokeWidth / 2,
+            r: radius,
+            fill: "none",
+            stroke: colors.primary,
+            strokeDasharray: 2 * Math.PI * radius,
+            strokeDashoffset: getStrokeDashOffset(freeSpacePercent),
+            strokeWidth,
+          }}
         />
         <SvgText
-          fill={colors.card}
-          fontSize="50"
-          fontWeight="bold"
-          x={WINDOW.WIDTH / 2}
-          y={radius + strokeWidth}
-          textAnchor="middle"
-          transform="translate(-20 10)">
+          {...{
+            fill: colors.notification,
+            fontSize: 60,
+            fontWeight: "bold",
+            x: WINDOW.WIDTH / 2,
+            y: radius + strokeWidth,
+            textAnchor: "middle",
+            transform: "translate(-20 15)",
+          }}>
           {100 - freeSpacePercent}%
         </SvgText>
       </Svg>
-      <Text>{totalSpace}GB</Text>
+      <View style={styles.memoryInfo}>
+        <Text
+          textStyle={{
+            alignSelf: "flex-start",
+            color: colors.notification,
+            fontSize: 55,
+            top: 15,
+          }}>
+          {Math.round(((100 - freeSpacePercent) * totalSpace) / 100)}
+          <Text
+            textStyle={{
+              color: colors.notification,
+              fontSize: 25,
+            }}>
+            GB
+          </Text>
+        </Text>
+        <Text textStyle={{ color: colors.border, fontSize: 90 }}>/</Text>
+        <Text
+          textStyle={{
+            alignSelf: "flex-end",
+            bottom: 15,
+            color: colors.border,
+            fontSize: 40,
+          }}>
+          {totalSpace}
+          <Text textStyle={{ color: colors.border, fontSize: 20 }}>GB</Text>
+        </Text>
+      </View>
       <View style={styles.buttonsContainer}>
         {[
           {
-            onPress: () => navigation.navigate("Send"),
-            title: "Send files",
+            onPress: () => navigation.navigate("CreateRoom"),
+            title: "Create Room",
           },
           {
-            onPress: () => navigation.navigate("Recieve"),
-            title: "Receive files",
+            onPress: () => navigation.navigate("JoinRoom"),
+            title: "Join Room",
           },
         ].map(({ onPress, title }, key) => (
-          <Button {...{ key, extraStyles: styles.button, onPress }}>
+          <Button
+            {...{
+              buttonStyle: styles.button,
+              key,
+              onPress,
+              textStyle: styles.buttonText,
+            }}>
             {title}
           </Button>
         ))}
@@ -90,13 +132,22 @@ const styles = StyleSheet.create({
   svgBox: {
     marginVertical: 40,
   },
-  buttonsContainer: {
+  memoryInfo: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    marginBottom: 40,
+  },
+  buttonsContainer: {
+    alignItems: "center",
   },
   button: {
-    height: 200,
-    width: WINDOW.WIDTH / 2 - 20,
+    width: 0.7 * WINDOW.WIDTH,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "600",
+    letterSpacing: 1,
+    textAlign: "center",
   },
 });
 

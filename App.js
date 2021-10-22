@@ -1,31 +1,16 @@
 import React, { useEffect } from "react";
-import { PermissionsAndroid } from "react-native";
+import { PermissionsAndroid, StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   initialize,
   startDiscoveringPeers,
-  stopDiscoveringPeers,
-  unsubscribeFromPeersUpdates,
-  unsubscribeFromThisDeviceChanged,
-  unsubscribeFromConnectionInfoUpdates,
   subscribeOnConnectionInfoUpdates,
   subscribeOnThisDeviceChanged,
   subscribeOnPeersUpdates,
-  connect,
-  cancelConnect,
-  createGroup,
-  removeGroup,
-  getAvailablePeers,
-  sendFile,
-  receiveFile,
-  getConnectionInfo,
-  getGroupInfo,
-  receiveMessage,
-  sendMessage,
 } from "react-native-wifi-p2p";
 
 import lightTheme from "./src/utils/theme";
-import NavigationFlow from "./src/navigation";
+import Navigation from "./src/navigation";
 
 const App = () => {
   useEffect(() => {
@@ -48,17 +33,11 @@ const App = () => {
         );
 
         subscribeOnPeersUpdates(console.log);
-        console.log("1");
         subscribeOnConnectionInfoUpdates(console.log);
-        console.log("2");
         subscribeOnThisDeviceChanged(console.log);
-        console.log("3");
 
         const status = await startDiscoveringPeers();
         console.log("startDiscoveringPeers status: ", status);
-
-        const chalJa = await getAvailablePeers();
-        console.log(chalJa);
       } catch (e) {
         console.error(e);
       }
@@ -67,7 +46,12 @@ const App = () => {
 
   return (
     <SafeAreaProvider style={{ backgroundColor: lightTheme.colors.background }}>
-      <NavigationFlow />
+      <StatusBar
+        backgroundColor="rgba(255, 255, 255, 0)"
+        barStyle="dark-content"
+        translucent={true}
+      />
+      <Navigation />
     </SafeAreaProvider>
   );
 };

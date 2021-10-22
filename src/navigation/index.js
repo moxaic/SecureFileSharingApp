@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import lightTheme from "../utils/theme";
 import ShareStack from "./ShareStack";
 
-const NavigationFlow = () => {
+const Navigation = () => {
   return (
     <NavigationContainer theme={lightTheme}>
       <ShareStack />
@@ -12,4 +12,4 @@ const NavigationFlow = () => {
   );
 };
 
-export default NavigationFlow;
+export default Navigation;
