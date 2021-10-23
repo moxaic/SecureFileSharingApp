@@ -31,11 +31,9 @@ const MyButton = ({
         onPress,
       }}>
       <Text
-        {...{
-          textStyle: {
-            color: background,
-            ...textStyle,
-          },
+        textStyle={{
+          color: background,
+          ...textStyle,
         }}>
         {children}
       </Text>

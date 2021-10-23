@@ -41,7 +41,7 @@ const Home = ({ navigation }) => {
           cy={radius + strokeWidth / 2}
           r={radius}
           fill="none"
-          stroke={colors.textBefore}
+          stroke={colors.border}
           {...{ strokeWidth }}
         />
         <Circle
@@ -69,26 +69,23 @@ const Home = ({ navigation }) => {
         <Text
           textStyle={{
             alignSelf: "flex-start",
+            color: colors.textDark,
             fontSize: 55,
             top: 15,
           }}>
           {Math.round(((100 - freeSpacePercent) * totalSpace) / 100)}
-          <Text
-            textStyle={{
-              fontSize: 25,
-            }}>
-            GB
-          </Text>
+          <Text textStyle={{ color: colors.textDark, fontSize: 25 }}>GB</Text>
         </Text>
-        <Text textStyle={{ color: colors.border, fontSize: 90 }}>/</Text>
+        <Text textStyle={{ fontSize: 90 }}>/</Text>
         <Text
           textStyle={{
             alignSelf: "flex-end",
             bottom: 15,
+            color: colors.textDark,
             fontSize: 40,
           }}>
           {totalSpace}
-          <Text textStyle={{ fontSize: 20 }}>GB</Text>
+          <Text textStyle={{ color: colors.textDark, fontSize: 20 }}>GB</Text>
         </Text>
       </View>
       {[

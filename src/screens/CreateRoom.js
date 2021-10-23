@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { createGroup, getAvailablePeers } from "react-native-wifi-p2p";
-import { useTheme } from "@react-navigation/native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { useTheme } from "@react-navigation/native";
+import { createGroup, getAvailablePeers } from "react-native-wifi-p2p";
 
 import NoDeviceSvg from "../assets/images/no-device.svg";
 import ShareLinkSvg from "../assets/images/share-link.svg";
@@ -36,7 +36,7 @@ const CreateRoom = () => {
     },
   }) => {
     const availableHeight = WINDOW.HEIGHT - y;
-    setMinHeight(availableHeight - 60);
+    setMinHeight(availableHeight - 44);
   };
 
   const onPressHandler = async () => {
@@ -51,11 +51,16 @@ const CreateRoom = () => {
   return (
     <>
       <Text
-        textStyle={{ fontSize: 20, fontWeight: "600", textAlign: "center" }}>
+        textStyle={{
+          fontColor: colors.textDark,
+          fontSize: 20,
+          fontWeight: "600",
+          textAlign: "center",
+        }}>
         Create Share Zone
       </Text>
-      <ShareLinkSvg style={styles.shareLinkSvg} width={WINDOW.WIDTH} />
-      <Text textStyle={{ textAlign: "center" }}>Avaiable Devices</Text>
+      <ShareLinkSvg style={{ marginVertical: 40 }} width={WINDOW.WIDTH} />
+      <Text textStyle={{ textAlign: "center" }}>Available Devices</Text>
       <View onLayout={getMinHeight} style={{ minHeight, paddingBottom: 40 }}>
         {peers === null ? (
           <ActivityIndicator
@@ -76,13 +81,17 @@ const CreateRoom = () => {
               textStyle={{
                 color: colors.error,
                 fontSize: 26,
+                left: 0,
+                position: "absolute",
+                right: 0,
                 textAlign: "center",
+                top: 10,
               }}>
               No devices nearby
             </Text>
             <NoDeviceSvg
-              style={{ alignSelf: "center" }}
-              width={0.7 * WINDOW.WIDTH}
+              style={{ alignSelf: "center", top: 40 }}
+              height={minHeight - 40}
             />
           </>
         ) : (
@@ -115,7 +124,7 @@ const CreateRoom = () => {
               ? colors.disabled
               : colors.primary,
           alignSelf: "center",
-          width: 0.85 * WINDOW.WIDTH,
+          width: 0.7 * WINDOW.WIDTH,
         }}
         disabled={
           peers === null || peers.length === 0 || selectedDevices.length === 0
@@ -133,9 +142,6 @@ const CreateRoom = () => {
 };
 
 const styles = StyleSheet.create({
-  shareLinkSvg: {
-    marginVertical: 40,
-  },
   deviceInfo: {
     alignItems: "center",
     alignSelf: "center",
