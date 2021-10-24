@@ -49,8 +49,10 @@ const CreateRoom = () => {
       await connect(selectedDevices[0].deviceAddress);
       const connInfo = await getConnectionInfo();
       console.log("onPresshandler\n", connInfo);
-      const msg = await receiveMessage();
-      console.log(msg);
+      setTimeout(async () => {
+        const msg = await receiveMessage();
+        console.log(msg);
+      }, 1000);
     } catch (err) {
       console.error(err);
     }

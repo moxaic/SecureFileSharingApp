@@ -5,6 +5,8 @@ import {
   getConnectionInfo,
   sendMessage,
   subscribeOnConnectionInfoUpdates,
+  subscribeOnPeersUpdates,
+  subscribeOnThisDeviceChanged,
 } from "react-native-wifi-p2p";
 
 import { Text } from "../components";
@@ -25,6 +27,8 @@ const JoinRoom = () => {
     };
 
     subscribeOnConnectionInfoUpdates(handleConnection);
+    subscribeOnPeersUpdates(handleConnection);
+    subscribeOnThisDeviceChanged(handleConnection);
   }, []);
 
   return (
