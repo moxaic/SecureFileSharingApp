@@ -4,10 +4,12 @@ import { useTheme } from "@react-navigation/native";
 
 const MyText = ({ children, textStyle = {} }) => {
   const {
-    colors: { text },
+    colors: { textDark },
   } = useTheme();
   return (
-    <Text style={{ color: text, fontSize: 18, ...textStyle }}>{children}</Text>
+    <Text style={{ color: textDark, fontSize: 18, ...textStyle }}>
+      {children}
+    </Text>
   );
 };
 

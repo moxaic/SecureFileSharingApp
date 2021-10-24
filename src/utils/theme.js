@@ -7,8 +7,9 @@ const lightTheme = {
     error: "#A0616A",
     notification: "#FFD037",
     primary: "#6C63FF",
-    text: "#444053",
-    textDark: "#3F3D56",
+    text: "#F6F8FB",
+    textDark: "#444053",
+    textDarker: "#3F3D56",
   },
   dark: false,
   /** shamelessly copied without attribution

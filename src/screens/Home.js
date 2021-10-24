@@ -69,23 +69,23 @@ const Home = ({ navigation }) => {
         <Text
           textStyle={{
             alignSelf: "flex-start",
-            color: colors.textDark,
+            color: colors.textDarker,
             fontSize: 55,
             top: 15,
           }}>
           {Math.round(((100 - freeSpacePercent) * totalSpace) / 100)}
-          <Text textStyle={{ color: colors.textDark, fontSize: 25 }}>GB</Text>
+          <Text textStyle={{ color: colors.textDarker, fontSize: 25 }}>GB</Text>
         </Text>
         <Text textStyle={{ fontSize: 90 }}>/</Text>
         <Text
           textStyle={{
             alignSelf: "flex-end",
             bottom: 15,
-            color: colors.textDark,
+            color: colors.textDarker,
             fontSize: 40,
           }}>
           {totalSpace}
-          <Text textStyle={{ color: colors.textDark, fontSize: 20 }}>GB</Text>
+          <Text textStyle={{ color: colors.textDarker, fontSize: 20 }}>GB</Text>
         </Text>
       </View>
       {[

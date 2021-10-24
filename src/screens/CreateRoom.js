@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { useHeaderHeight } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
-import { createGroup, getAvailablePeers } from "react-native-wifi-p2p";
+import {
+  connect,
+  getAvailablePeers,
+  getConnectionInfo,
+  receiveMessage,
+} from "react-native-wifi-p2p";
 
 import NoDeviceSvg from "../assets/images/no-device.svg";
 import ShareLinkSvg from "../assets/images/share-link.svg";
@@ -14,13 +20,14 @@ import { Button, Text } from "../components";
 const CreateRoom = () => {
   const [peers, setPeers] = useState(null);
   const [minHeight, setMinHeight] = useState(0);
-  const [selectedDevices, setSelectedDevices] = useState([1]);
+  const [selectedDevices, setSelectedDevices] = useState([]);
+  const { colors } = useTheme();
+  const headerHeight = useHeaderHeight();
 
   useEffect(() => {
     (async () => {
       try {
         const pr = await getAvailablePeers();
-        console.log(pr);
         setPeers(pr.devices);
       } catch (err) {
         console.error(err);
@@ -28,38 +35,30 @@ const CreateRoom = () => {
     })();
   }, []);
 
-  const { colors } = useTheme();
-
   const getMinHeight = ({
     nativeEvent: {
       layout: { y },
     },
   }) => {
     const availableHeight = WINDOW.HEIGHT - y;
-    setMinHeight(availableHeight - 44);
+    setMinHeight(availableHeight - headerHeight - 44);
   };
 
   const onPressHandler = async () => {
     try {
-      const groupInfo = await createGroup();
-      console.log(groupInfo);
+      await connect(selectedDevices[0].deviceAddress);
+      const connInfo = await getConnectionInfo();
+      console.log("onPresshandler\n", connInfo);
+      const msg = await receiveMessage();
+      console.log(msg);
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <>
-      <Text
-        textStyle={{
-          fontColor: colors.textDark,
-          fontSize: 20,
-          fontWeight: "600",
-          textAlign: "center",
-        }}>
-        Create Share Zone
-      </Text>
-      <ShareLinkSvg style={{ marginVertical: 40 }} width={WINDOW.WIDTH} />
+    <View style={{ height: WINDOW.HEIGHT }}>
+      <ShareLinkSvg style={{ marginVertical: 30 }} width={WINDOW.WIDTH} />
       <Text textStyle={{ textAlign: "center" }}>Available Devices</Text>
       <View onLayout={getMinHeight} style={{ minHeight, paddingBottom: 40 }}>
         {peers === null ? (
@@ -80,24 +79,25 @@ const CreateRoom = () => {
             <Text
               textStyle={{
                 color: colors.error,
-                fontSize: 26,
+                fontSize: 30,
+                fontWeight: "600",
                 left: 0,
                 position: "absolute",
                 right: 0,
                 textAlign: "center",
-                top: 10,
+                top: 25,
               }}>
               No devices nearby
             </Text>
             <NoDeviceSvg
-              style={{ alignSelf: "center", top: 40 }}
-              height={minHeight - 40}
+              style={{ alignSelf: "center", top: 80 }}
+              height={minHeight - 80}
             />
           </>
         ) : (
           peers.map((peer, key) => (
             <View style={styles.deviceInfo} {...{ key }}>
-              <SmartphoneSvg fill={colors.textAfter} height={27} />
+              <SmartphoneSvg fill={colors.card} height={27} />
               <Text textStyle={{ marginHorizontal: 15 }}>
                 {peer.deviceName}
               </Text>
@@ -108,7 +108,11 @@ const CreateRoom = () => {
                   borderColor: colors.primary,
                   borderWidth: 2,
                 }}
-                onPress={(isChecked) => {}}
+                onPress={(isChecked) => {
+                  if (isChecked) {
+                    setSelectedDevices((prev) => [...prev, peer]);
+                  }
+                }}
                 size={27}
                 style={{ marginLeft: "auto" }}
                 unfillColor={colors.background}
@@ -129,15 +133,16 @@ const CreateRoom = () => {
         disabled={
           peers === null || peers.length === 0 || selectedDevices.length === 0
         }
+        onPress={onPressHandler}
         textStyle={{
           color:
             peers === null || selectedDevices.length === 0
-              ? colors.textAfter
-              : colors.background,
+              ? colors.textDark
+              : colors.text,
         }}>
         Create
       </Button>
-    </>
+    </View>
   );
 };
 
@@ -157,3 +162,7 @@ const styles = StyleSheet.create({
 });
 
 export default CreateRoom;
+
+/*
+{"devices": [{"deviceAddress": "e0:37:bf:25:d8:c1", "deviceName": "KLV-32W622F", "isGroupOwner": true, "primaryDeviceType": "7-0050F204-1", "secondaryDeviceType": null, "status": 3}]}
+*/
