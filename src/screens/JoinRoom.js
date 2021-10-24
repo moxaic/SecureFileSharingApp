@@ -9,20 +9,20 @@ import {
   subscribeOnThisDeviceChanged,
 } from "react-native-wifi-p2p";
 
-import { Text } from "../components";
 import { WINDOW } from "../utils/constants";
+import { Text, Button } from "../components";
 
 const JoinRoom = () => {
   const headerHeight = useHeaderHeight();
 
   useEffect(() => {
     const handleConnection = async (e) => {
-      console.log(e);
-      const connInfo = await getConnectionInfo();
+      console.log("handleConnection\n", e);
+      // const connInfo = await getConnectionInfo();
       // console.log(connInfo);
       // setTimeout(async () => {
-      const msgMeta = await sendMessage("hello there!");
-      console.log(msgMeta);
+      // const msgMeta = await sendMessage("hello there!");
+      // console.log(msgMeta);
       // }, 1000);
     };
 
@@ -30,6 +30,12 @@ const JoinRoom = () => {
     subscribeOnPeersUpdates(handleConnection);
     subscribeOnThisDeviceChanged(handleConnection);
   }, []);
+
+  const sendTheFuckinMessage = () => {
+    sendMessage()
+      .then((metaInfo) => console.log(metaInfo))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <View style={{ height: WINDOW.HEIGHT }}>
@@ -42,6 +48,7 @@ const JoinRoom = () => {
         }}>
         Waiting for connection...
       </Text>
+      <Button onPress={sendTheFuckinMessage}>Send Files</Button>
     </View>
   );
 };

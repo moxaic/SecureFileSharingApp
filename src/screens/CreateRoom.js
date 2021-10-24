@@ -17,7 +17,7 @@ import { WINDOW } from "../utils/constants";
 import lightTheme from "../utils/theme";
 import { Button, Text } from "../components";
 
-const CreateRoom = () => {
+const CreateRoom = ({ navigation }) => {
   const [peers, setPeers] = useState(null);
   const [minHeight, setMinHeight] = useState(0);
   const [selectedDevices, setSelectedDevices] = useState([]);
@@ -49,10 +49,11 @@ const CreateRoom = () => {
       await connect(selectedDevices[0].deviceAddress);
       const connInfo = await getConnectionInfo();
       console.log("onPresshandler\n", connInfo);
-      setTimeout(async () => {
-        const msg = await receiveMessage();
-        console.log(msg);
-      }, 1000);
+      // setTimeout(async () => {
+      //   const msg = await receiveMessage();
+      //   console.log(msg);
+      // }, 1000);
+      navigation.navigate("ReceiveFiles");
     } catch (err) {
       console.error(err);
     }

@@ -3,6 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { CreateRoom, JoinRoom, Home } from "../screens";
 import { withScreenWrapper } from "../HOCs";
+import CreateRoomStack from "./CreateRoomStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -15,10 +16,7 @@ const AppDrawer = () => {
         headerTitleAlign: "center",
       }}>
       <Drawer.Screen name="Home" component={withScreenWrapper(Home)} />
-      <Drawer.Screen
-        name="CreateRoom"
-        component={withScreenWrapper(CreateRoom)}
-      />
+      <Drawer.Screen name="CreateRoom" component={CreateRoomStack} />
       <Drawer.Screen name="JoinRoom" component={withScreenWrapper(JoinRoom)} />
     </Drawer.Navigator>
   );
