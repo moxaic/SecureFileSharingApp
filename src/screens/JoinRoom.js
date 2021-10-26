@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { useHeaderHeight } from "@react-navigation/elements";
 import {
@@ -9,21 +9,17 @@ import {
   subscribeOnThisDeviceChanged,
 } from "react-native-wifi-p2p";
 
+import Waiting from "../assets/images/waiting.svg";
 import { WINDOW } from "../utils/constants";
 import { Text, Button } from "../components";
 
 const JoinRoom = () => {
+  const [groupFormed, setGroupFormed] = useState(false);
   const headerHeight = useHeaderHeight();
 
   useEffect(() => {
-    const handleConnection = async (e) => {
+    const handleConnection = /* async */ (e) => {
       console.log("handleConnection\n", e);
-      // const connInfo = await getConnectionInfo();
-      // console.log(connInfo);
-      // setTimeout(async () => {
-      // const msgMeta = await sendMessage("hello there!");
-      // console.log(msgMeta);
-      // }, 1000);
     };
 
     subscribeOnConnectionInfoUpdates(handleConnection);
@@ -31,24 +27,41 @@ const JoinRoom = () => {
     subscribeOnThisDeviceChanged(handleConnection);
   }, []);
 
-  const sendTheFuckinMessage = () => {
-    sendMessage()
-      .then((metaInfo) => console.log(metaInfo))
-      .catch((err) => console.log(err));
+  const sendTheMessage = /* async */ () => {
+    // TODO: test using async await
+    // try {
+    //   console.log(await getConnectionInfo());
+    //   const metaInfo = await sendMessage("testing...");
+    //   console.log(metaInfo);
+    // } catch (err) {
+    //   console.error(err);
+    // }
+
+    getConnectionInfo()
+      .then((info) => console.log(info))
+      .then(() => {
+        sendMessage("hey hey")
+          .then((metaInfo) => console.log(metaInfo))
+          .catch((err) => console.log(err));
+      });
   };
 
   return (
-    <View style={{ height: WINDOW.HEIGHT }}>
+    <View
+      style={{
+        height: WINDOW.HEIGHT - headerHeight,
+        justifyContent: "center",
+      }}>
       <Text
         textStyle={{
           fontSize: 40,
           lineHeight: 60,
           textAlign: "center",
-          top: WINDOW.HEIGHT / 2 - headerHeight,
         }}>
-        Waiting for connection...
+        Waiting for someone to connect...
       </Text>
-      <Button onPress={sendTheFuckinMessage}>Send Files</Button>
+      <Waiting width={WINDOW.WIDTH} />
+      <Button onPress={sendTheMessage}>Send Files</Button>
     </View>
   );
 };

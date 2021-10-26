@@ -114,7 +114,8 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   svgBox: {
-    marginVertical: 40,
+    marginBottom: 40,
+    marginTop: 60,
   },
   memoryInfo: {
     flexDirection: "row",

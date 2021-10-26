@@ -3,12 +3,7 @@ import { ActivityIndicator, StyleSheet, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
-import {
-  connect,
-  getAvailablePeers,
-  getConnectionInfo,
-  receiveMessage,
-} from "react-native-wifi-p2p";
+import { connect, getAvailablePeers } from "react-native-wifi-p2p";
 
 import NoDeviceSvg from "../assets/images/no-device.svg";
 import ShareLinkSvg from "../assets/images/share-link.svg";
@@ -47,12 +42,6 @@ const CreateRoom = ({ navigation }) => {
   const onPressHandler = async () => {
     try {
       await connect(selectedDevices[0].deviceAddress);
-      const connInfo = await getConnectionInfo();
-      console.log("onPresshandler\n", connInfo);
-      // setTimeout(async () => {
-      //   const msg = await receiveMessage();
-      //   console.log(msg);
-      // }, 1000);
       navigation.navigate("ReceiveFiles");
     } catch (err) {
       console.error(err);
@@ -60,7 +49,7 @@ const CreateRoom = ({ navigation }) => {
   };
 
   return (
-    <View style={{ height: WINDOW.HEIGHT }}>
+    <>
       <ShareLinkSvg style={{ marginVertical: 30 }} width={WINDOW.WIDTH} />
       <Text textStyle={{ textAlign: "center" }}>Available Devices</Text>
       <View onLayout={getMinHeight} style={{ minHeight, paddingBottom: 40 }}>
@@ -145,7 +134,7 @@ const CreateRoom = ({ navigation }) => {
         }}>
         Create
       </Button>
-    </View>
+    </>
   );
 };
 

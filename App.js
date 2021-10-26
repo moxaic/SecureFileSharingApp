@@ -14,29 +14,6 @@ import Navigation from "./src/navigation";
 
 const App = () => {
   useEffect(() => {
-    // PermissionsAndroid.request(
-    //   PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-    //   {
-    //     title: "Access to read",
-    //     message: "READ_EXTERNAL_STORAGE",
-    //   },
-    // )
-    //   .then((granted) => {
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //       console.log("You can use read operation");
-    //     } else {
-    //       console.log("Read operation permission denied");
-    //     }
-    //   })
-    //   .then(() => {
-    //     return PermissionsAndroid.request(
-    //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-    //       {
-    //         title: "Access to write",
-    //         message: "WRITE_EXTERNAL_STORAGE",
-    //       },
-    //     );
-    //   });
     (async () => {
       try {
         await initialize();
@@ -54,9 +31,9 @@ const App = () => {
             : "Permission denied: p2p mode will not work",
         );
 
-        // subscribeOnPeersUpdates(console.log);
-        // subscribeOnConnectionInfoUpdates(console.log);
-        // subscribeOnThisDeviceChanged(console.log);
+        subscribeOnPeersUpdates(console.log);
+        subscribeOnConnectionInfoUpdates(console.log);
+        subscribeOnThisDeviceChanged(console.log);
 
         const status = await startDiscoveringPeers();
         console.log("startDiscoveringPeers status: ", status);
